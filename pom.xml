@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.mentoring</groupId>
+  <artifactId>mentor-usuarios-service</artifactId>
+  <version>0.1</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>io.micronaut</groupId>
+    <artifactId>micronaut-parent</artifactId>
+    <version>2.3.3</version>
+  </parent>
+
+  <properties>
+    <packaging>jar</packaging>
+    <jdk.version>11</jdk.version>
+    <release.version>11</release.version>
+    <micronaut.version>2.3.3</micronaut.version>
+    <micronaut.openapi.version>2.3.1</micronaut.openapi.version>
+    <exec.mainClass>br.com.mentoring.Application</exec.mainClass>
+    <micronaut.runtime>netty</micronaut.runtime>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-inject</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-inject-java</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-validation</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-http-server-netty</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-http-client</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-runtime</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.codegen.v3</groupId>
+      <artifactId>swagger-codegen-maven-plugin</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>1.11.979</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.18</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- <dependency>
+      <groupId>io.micronaut.security</groupId>
+      <artifactId>micronaut-security-oauth2</artifactId>
+      <scope>compile</scope>
+    </dependency> -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut.test</groupId>
+      <artifactId>micronaut-test-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.micronaut.build</groupId>
+        <artifactId>micronaut-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Uncomment to enable incremental compilation -->
+          <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
+          <annotationProcessorPaths combine.children="append">
+            <path>
+              <groupId>io.micronaut.openapi</groupId>
+              <artifactId>micronaut-openapi</artifactId>
+              <version>${micronaut.openapi.version}</version>
+            </path>
+            <path>
+              <groupId>io.micronaut.security</groupId>
+              <artifactId>micronaut-security-annotations</artifactId>
+              <version>${micronaut.security.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.18</version>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-Amicronaut.processing.group=br.com.mentoring</arg>
+            <arg>-Amicronaut.processing.module=mentor-usuarios-service</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.swagger.codegen.v3</groupId>
+        <artifactId>swagger-codegen-maven-plugin</artifactId>
+        <version>3.0.25</version>
+        <executions>
+          <execution>
+            <id>generate-swagger-spring</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/swagger.yml</inputSpec>
+              <language>micronaut</language>
+              <configOptions>
+                <sourceFolder>src/main/java</sourceFolder>
+              </configOptions>
+              <apiPackage>br.com.mentoring.api</apiPackage>
+              <modelPackage>br.com.mentoring.model</modelPackage>
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,28 @@
+<configuration>
+
+    <property name="LOG_DIR" value="/temp/logs/mentor" />
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/mentor-usuarios-service.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>false</withJansi>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="br.com.mentoring" level="WARN">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

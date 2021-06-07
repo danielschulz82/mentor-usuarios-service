@@ -1,0 +1,483 @@
+openapi: "3.0.0"
+
+info:
+  title: Plataforma de mentoria - Usuários
+  description: Microserviço responsável pelo cadastro de usuários (alunos e mentores)
+  version: 0.1.0
+
+paths:
+  /usuarios:
+    post:
+      summary: Salvar usuário
+      description: Salva os dados de um novo usuário, mentor ou aluno
+      operationId: salvarUsuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    put:
+      summary: Atualiza usuário
+      description: Atualiza os dados de um usuário existente, mentor ou aluno
+      operationId: atualizarUsuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    delete:
+      summary: Deleta usuário
+      description: Exclui os dados de um usuário existente, mentor ou aluno
+      operationId: excluirUsuario
+      parameters:
+        - in: header
+          name: x-usuario-email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    get:
+      summary: Carregar usuário
+      description: Carrega os dados de um único usuário, mentor ou aluno
+      operationId: carregarUsuario
+      parameters:
+        - in: header
+          name: x-usuario-email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /listar/usuarios:
+    get:
+      summary: Lista usuários
+      description: Carrega lista com os dados de todoss usuários, mentor ou aluno
+      operationId: listarUsuarios
+      parameters:
+        - in: header
+          name: x-usuario-nome
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/components/schemas/Usuario'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /listar/perguntas:
+    get:
+      summary: Lista perguntas
+      description: Carrega lista de perguntas filtradas por enunciado e/ou id de template de pesquisa
+      operationId: listarPerguntas
+      parameters:
+        - in: header
+          name: x-template-id
+          required: false
+          schema:
+            type: string
+        - in: header
+          name: x-pergunta-enunciado
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/components/schemas/Pergunta'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /listar/templates:
+    get:
+      summary: Lista templates de pesquisa
+      description: Carrega lista de template de pesquisa
+      operationId: listarTemplates
+      parameters:
+        - in: header
+          name: x-template-descricao
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/components/schemas/TemplatePesquisa'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /listar/resultados:
+    get:
+      summary: Lista respostas de uma pesquisa
+      description: Carrega lista de template de pesquisa
+      operationId: listarResultados
+      parameters:
+        - in: header
+          name: x-template-id
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/components/schemas/Pesquisa'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /pesquisa/perguntas:
+    post:
+      summary: Salvar pergunta
+      description: Salva os dados de uma nova pergunta
+      operationId: salvarPergunta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pergunta'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    put:
+      summary: Atualiza pergunta
+      description: Atualiza os dados de uma pergunta existente
+      operationId: atualizarPergunta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pergunta'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    delete:
+      summary: Deleta pergunta
+      description: Exclui os dados de uma pergunta existente
+      operationId: excluirPergunta
+      parameters:
+        - in: header
+          name: x-pergunta-id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    get:
+      summary: Carregar pergunta
+      description: Carrega os dados de uma única pergunta
+      operationId: carregarPergunta
+      parameters:
+        - in: header
+          name: x-pergunta-id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pergunta'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /pesquisa/templates:
+    post:
+      summary: Salvar template de pesquisa
+      description: Salva os dados de um novo template de pesquisa
+      operationId: salvarTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplatePesquisa'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    put:
+      summary: Atualiza template de pesquisa
+      description: Atualiza os dados de um template de pesquisa existente
+      operationId: atualizarTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplatePesquisa'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    delete:
+      summary: Deleta template de pesquisa
+      description: Exclui os dados de um template de pesquisa existente
+      operationId: excluirTemplate
+      parameters:
+        - in: header
+          name: x-template-id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    get:
+      summary: Carregar template de pesquisa
+      description: Carrega os dados de um único template de pesquisa
+      operationId: carregarTemplate
+      parameters:
+        - in: header
+          name: x-template-id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplatePesquisa'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+  /pesquisa:
+    post:
+      summary: Enviar pesquisa
+      description: Envia e salva os dados de uma pesquisa respondida
+      operationId: salvarPesquisa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pesquisa'
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    get:
+      summary: Carregar resultado de pesquisa
+      description: Carrega os dados de uma pesquisa respondida por um usuário
+      operationId: carregarPesquisa
+      parameters:
+        - in: header
+          name: x-pesquisa-id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retorno de operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pesquisa'
+        '412':
+          description: Erro de validação - campo obrigatório não preenchido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+components:
+  schemas:
+    Erro:
+      type: object
+      properties:
+        id:
+          type: string
+        mensagem:
+          type: string
+    Usuario:
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+        telefone:
+          type: string
+        perfilUsuario:
+          $ref: '#/components/schemas/PerfilUsuario'
+    PerfilUsuario:
+      type: string
+      enum:
+        - ADMINISTRADOR
+        - MENTOR
+        - ALUNO
+    TemplatePesquisa:
+      type: object
+      properties:
+        idTemplate:
+          type: string
+        descricao:
+          type: string
+    Pergunta:
+      type: object
+      properties:
+        id:
+          type: string
+        idTemplate:
+          type: string
+        enunciado:
+          type: string
+        opcoesResposta:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpcaoResposta'
+    OpcaoResposta:
+      type: object
+      properties:
+        idOpcao:
+          type: string
+        texto:
+          type: string
+    Pesquisa:
+      type: object
+      properties:
+        idPesquisa:
+          type: string
+        idTemplate:
+          type: string
+        idUsuario:
+          type: string
+        respostas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resposta'
+    Resposta:
+      type: object
+      properties:
+        idPergunta:
+          type: string
+        idOpcaoResposta:
+          type: string

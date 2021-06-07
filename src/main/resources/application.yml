@@ -1,0 +1,11 @@
+micronaut:
+  application:
+    name: mentorUsuariosService
+  server:
+    context-path: /mentor-usuarios-service
+endpoints:
+  all:
+    enabled: true
+    sensitive: false
+  stop:
+    enabled: false
